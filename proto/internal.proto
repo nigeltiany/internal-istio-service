@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package Internal;
+
+message InternalRequest {
+    string message = 1;
+}
+
+message InternalResponse {
+    string message = 1;
+}
+
+service InternalService {
+    rpc Message(InternalRequest) returns (InternalResponse);
+}

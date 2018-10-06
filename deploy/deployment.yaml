@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-internal
+  labels:
+    app: micro-internal
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    name: grpc-echo
+    targetPort: grpc-int
+  selector:
+    app: micro-internal
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-internal
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: micro-internal
+        version: v1
+    spec:
+      containers:
+      - name: micro-internal
+        image: gcr.io/confab-cloud/micro-internal:latest
+        imagePullPolicy: Always
+        ports:
+        - name: grpc-int
+          containerPort: 8080
+  selector:
+    matchLabels:
+      app: micro-internal
